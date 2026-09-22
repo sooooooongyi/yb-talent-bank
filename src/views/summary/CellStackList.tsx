@@ -7,7 +7,6 @@ import {
   formatAmount,
 } from "@/lib/cell-summary";
 import { getCellLeaderImagePath } from "@/lib/cell-leader-img";
-import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useLayoutEffect, useRef, useState } from "react";
 
@@ -36,12 +35,11 @@ const CellLeaderAvatar = ({
 
   return (
     <span className="relative h-11 w-11 shrink-0 overflow-hidden rounded-full bg-white/80 ring-2 ring-white/50">
-      <Image
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
         src={src}
         alt={`${cellNm}셀 리더`}
-        fill
-        className="object-cover"
-        sizes="44px"
+        className="h-full w-full object-cover"
         onError={() => setHasError(true)}
       />
     </span>

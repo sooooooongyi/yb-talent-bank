@@ -3,8 +3,13 @@ import { formatAmount, summarizeByCell } from "@/lib/cell-summary";
 import { CellStackList } from "@/views/summary/CellStackList";
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
+
 const SummaryPage = async () => {
   const transactions = await getTransactions();
+  const isSheetConfigured = Boolean(
+    process.env.GOOGLE_SPREADSHEET_ID && process.env.GOOGLE_SHEET_GID,
+  );
   const cellSummaries = summarizeByCell(transactions);
   const grandTotal = cellSummaries.reduce(
     (sum, row) => sum + row.totalAmount,
@@ -49,6 +54,16 @@ const SummaryPage = async () => {
           </p>
         </section>
       </header>
+      {!isSheetConfigured ? (
+        <p className="mt-6 rounded-2xl border border-dashed border-zinc-200 px-4 py-6 text-sm text-zinc-500">
+          시트 연동 환경 변수가 없습니다. 배포 환경(Vercel) Settings →
+          Environment Variables에{" "}
+          <span className="font-medium">GOOGLE_SPREADSHEET_ID</span>,{" "}
+          <span className="font-medium">GOOGLE_SHEET_GID</span>를 추가한 뒤
+          재배포해 주세요.
+        </p>
+      ) : null}
+
       <div className="mt-6">
         <CellStackList cells={cellSummaries} />
       </div>

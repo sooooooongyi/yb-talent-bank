@@ -7,6 +7,8 @@ import {
 import { CellDetailView } from "@/views/summary/CellDetailView";
 import { notFound } from "next/navigation";
 
+export const dynamic = "force-dynamic";
+
 type CellDetailPageProps = {
   params: Promise<{ cellNm: string }>;
 };
