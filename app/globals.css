@@ -22,5 +22,25 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+@keyframes hero-head-bounce {
+  0%,
+  100% {
+    transform: translate(-50%, 0);
+  }
+  30% {
+    transform: translate(-50%, -18px);
+  }
+  50% {
+    transform: translate(-50%, -8px);
+  }
+  70% {
+    transform: translate(-50%, -14px);
+  }
+}
+
+.hero-head-bounce {
+  animation: hero-head-bounce 2.2s ease-in-out infinite;
 }
