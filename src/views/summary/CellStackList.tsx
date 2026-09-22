@@ -6,8 +6,47 @@ import {
   encodeCellNmForPath,
   formatAmount,
 } from "@/lib/cell-summary";
+import { getCellLeaderImagePath } from "@/lib/cell-leader-img";
+import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useLayoutEffect, useRef, useState } from "react";
+
+type CellLeaderAvatarProps = {
+  cellNm: string;
+  fallbackClassName: string;
+};
+
+/** 셀 리더 프로필 (없으면 이니셜) */
+const CellLeaderAvatar = ({
+  cellNm,
+  fallbackClassName,
+}: CellLeaderAvatarProps) => {
+  const [hasError, setHasError] = useState(false);
+  const src = getCellLeaderImagePath(cellNm);
+
+  if (hasError) {
+    return (
+      <span
+        className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-sm font-semibold ${fallbackClassName}`}
+      >
+        {cellNm.slice(0, 1)}
+      </span>
+    );
+  }
+
+  return (
+    <span className="relative h-11 w-11 shrink-0 overflow-hidden rounded-full bg-white/80 ring-2 ring-white/50">
+      <Image
+        src={src}
+        alt={`${cellNm}셀 리더`}
+        fill
+        className="object-cover"
+        sizes="44px"
+        onError={() => setHasError(true)}
+      />
+    </span>
+  );
+};
 
 type CellStackListProps = {
   cells: CellSummaryType[];
@@ -107,11 +146,10 @@ export const CellStackList = ({ cells }: CellStackListProps) => {
               >
                 <div className="flex h-full items-start justify-between gap-4">
                   <div className="flex min-w-0 flex-1 items-center gap-3">
-                    <span
-                      className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-sm font-semibold ${iconBg} ${textMain}`}
-                    >
-                      {cell.cellNm.slice(0, 1)}
-                    </span>
+                    <CellLeaderAvatar
+                      cellNm={cell.cellNm}
+                      fallbackClassName={`${iconBg} ${textMain}`}
+                    />
                     <h3 className="truncate text-xl font-semibold leading-tight">
                       {cell.cellNm}셀
                     </h3>
